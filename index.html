@@ -1,0 +1,308 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jewellry Online Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fdfdfd;
+      color: #333;
+    }
+    header {
+      background: #b8860b;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .hero {
+      background: url('bgbanner.jpg') no-repeat center center/cover;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 5px black;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .products, .checkout, .confirmation {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      background: white;
+      transition: transform 0.3s;
+    }
+    .product:hover {
+      transform: scale(1.05);
+    }
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .product h3 {
+      margin: 10px 0;
+    }
+    .product p {
+      color: #b8860b;
+      font-weight: bold;
+    }
+    .product button {
+      background: #b8860b;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .product button:hover {
+      background: #8b6508;
+    }
+    .cart {
+      background: #fff8dc;
+      padding: 20px;
+      margin: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .checkout {
+      display: none;
+      margin: 20px;
+    }
+    .checkout form {
+      grid-column: span 2;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .checkout label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .checkout input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .checkout button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #b8860b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .checkout button:hover {
+      background: #8b6508;
+    }
+    .confirmation {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    .confirmation h2 {
+      color: #b8860b;
+    }
+    .confirmation p {
+      font-size: 18px;
+    }
+    .confirmation button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #b8860b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .confirmation button:hover {
+      background: #8b6508;
+    }
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jewelry Store</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero">Shine with Elegance ✨</div>
+
+  <!-- Products -->
+  <section class="products">
+    <div class="product">
+      <img src="ring.jpg" alt="Diamond Ring">
+      <h3>Diamond Ring</h3>
+      <p>$499</p>
+      <button onclick="addToCart('Diamond Ring', 499)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="goldnecklace.jpg" alt="Gold Necklace">
+      <h3>Gold Necklace</h3>
+      <p>$799</p>
+      <button onclick="addToCart('Gold Necklace', 799)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="silver bracelet.jpg" alt="Silver Bracelet">
+      <h3>Silver Bracelet</h3>
+      <p>$199</p>
+      <button onclick="addToCart('Silver Bracelet', 199)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="earrings.jpg" alt="Pearl Earrings">
+      <h3>Pearl Earrings</h3>
+      <p>$299</p>
+      <button onclick="addToCart('Pearl Earrings', 299)">Add to Cart</button>
+    </div>
+  </section>
+
+  <!-- Cart -->
+  <section class="cart">
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p><strong>Total: $<span id="cart-total">0</span></strong></p>
+    <button onclick="goToCheckout()">Proceed to Checkout</button>
+  </section>
+
+  <!-- Checkout -->
+  <section class="checkout" id="checkout-section">
+    <form onsubmit="submitOrder(event)">
+      <h2>💳 Checkout</h2>
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <label for="address">Shipping Address:</label>
+      <input type="text" id="address" required>
+
+      <label for="card">Card Number:</label>
+      <input type="text" id="card" maxlength="16" required>
+
+      <label for="expiry">Expiry Date (MM/YY):</label>
+      <input type="text" id="expiry" maxlength="5" required>
+
+      <label for="cvv">CVV:</label>
+      <input type="password" id="cvv" maxlength="3" required>
+
+      <button type="submit">Pay Now</button>
+    </form>
+  </section>
+
+  <!-- Order Confirmation -->
+  <section class="confirmation" id="confirmation-section">
+    <h2>✅ Order Confirmed!</h2>
+    <p>Thank you, <span id="confirm-name"></span> 🎉</p>
+    <p>Your order has been placed successfully.</p>
+    <p>Total Paid: $<span id="confirm-total"></span></p>
+    <p>Shipping to: <span id="confirm-address"></span></p>
+    <button onclick="continueShopping()">Continue Shopping</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Jewelry Store | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(product, price) {
+      cart.push({ product, price });
+      total += price;
+      displayCart();
+    }
+
+    function displayCart() {
+      let cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
+      cart.forEach(item => {
+        let li = document.createElement("li");
+        li.textContent = item.product + " - $" + item.price;
+        cartItems.appendChild(li);
+      });
+      document.getElementById("cart-total").textContent = total;
+    }
+
+    function goToCheckout() {
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      document.querySelector(".products").style.display = "none";
+      document.querySelector(".cart").style.display = "none";
+      document.getElementById("checkout-section").style.display = "grid";
+    }
+
+    function submitOrder(event) {
+      event.preventDefault();
+      let name = document.getElementById("name").value;
+      let address = document.getElementById("address").value;
+
+      document.getElementById("confirm-name").textContent = name;
+      document.getElementById("confirm-total").textContent = total;
+      document.getElementById("confirm-address").textContent = address;
+
+      cart = [];
+      total = 0;
+      displayCart();
+
+      document.getElementById("checkout-section").style.display = "none";
+      document.getElementById("confirmation-section").style.display = "block";
+    }
+
+    function continueShopping() {
+      document.getElementById("confirmation-section").style.display = "none";
+      document.querySelector(".products").style.display = "grid";
+      document.querySelector(".cart").style.display = "block";
+    }
+  </script>
+</body>
+</html>
